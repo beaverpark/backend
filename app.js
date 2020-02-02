@@ -2,16 +2,11 @@ const express = require('express');
 const app = express();
 const path = require('path');
 const db = require('./db');
-
 const User = require('./models/User');
 
-// console.log(User);
-
-//TODO: if I require mongoose and connect once, 
-//subsequence mongose import in other files get conneciton too?
-// how does User get connection?
-
 app.use(express.static(path.join(__dirname, 'public')));
+
+console.log(app.stack)
 
 //TODO: make api.beaver.com/
 
@@ -20,16 +15,30 @@ app.get('/api/test', (req, res) => {
 	res.json(testJSON);
 });
 
-User.find((err, users) => {
-	// console.log("hi")
+// Routes
+app.use('/api', require('./routes/api'));
 
-	// if(err) {
-	// 	console.log(err)
-	// }
 
-	// 	// console.log(1);
-	// console.log(users)
-});
+// User.find((err, users) => {
+// 	// console.log("hi")
+// 	console.log("Selected users:")
+
+// 	if(err) {
+// 		console.log(err)
+// 	}
+
+// 	console.log(users)
+// });
+
+
+// User.create({id: 2, email: 'b@b.com', password: 'b', firstName: 'David', lastName: 'Kim'}, (err, user) => {
+// 	if(err) {
+// 		console.log(err);
+// 	}
+
+// 	console.log("Successfully created User.")
+// 	console.log(user);
+// })
 
 
 
@@ -41,13 +50,10 @@ app.get('/users', (req, res) => {
 	});
 
 
-mongoose.model('User').find((err, users) => {
-	console.log(2);
-	// console.log(users)
-});
-
-
-
+	mongoose.model('User').find((err, users) => {
+		console.log(2);
+		// console.log(users)
+	});
 
 });
 
