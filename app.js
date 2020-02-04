@@ -6,8 +6,6 @@ const User = require('./models/User');
 
 app.use(express.static(path.join(__dirname, 'public')));
 
-console.log(app.stack)
-
 //TODO: make api.beaver.com/
 
 app.get('/api/test', (req, res) => {
@@ -17,45 +15,8 @@ app.get('/api/test', (req, res) => {
 
 // Routes
 app.use('/api', require('./routes/api'));
+app.use('/dashboard', require('./routes/dashboard'));
 
-
-// User.find((err, users) => {
-// 	// console.log("hi")
-// 	console.log("Selected users:")
-
-// 	if(err) {
-// 		console.log(err)
-// 	}
-
-// 	console.log(users)
-// });
-
-
-// User.create({id: 2, email: 'b@b.com', password: 'b', firstName: 'David', lastName: 'Kim'}, (err, user) => {
-// 	if(err) {
-// 		console.log(err);
-// 	}
-
-// 	console.log("Successfully created User.")
-// 	console.log(user);
-// })
-
-
-
-app.get('/users', (req, res) => {
-
-	mongoose.model('User').find((err, users) => {
-		console.log(1);
-		// console.log(users)
-	});
-
-
-	mongoose.model('User').find((err, users) => {
-		console.log(2);
-		// console.log(users)
-	});
-
-});
 
 // db.model('')	
 
@@ -73,8 +34,6 @@ app.get('/users', (req, res) => {
 // DELETE /api/user
 
 
-
-
 // actions
 // 1. add goal
 // /api/user
@@ -87,14 +46,6 @@ app.get('/users', (req, res) => {
 // 3. mark start time for a step
 // 4. mark end time for a started step
 // 
-
-app.post('/api/user/', (req, res) => {
-
-
-
-});
-
-
 
 
 const port = process.env.port || 3000;
