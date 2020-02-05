@@ -15,14 +15,14 @@ exports.getUser = (req, res) => {
 
 exports.createUser = (req, res) => {
 	
-	User.create({id: 2, email: 'b@b.com', password: 'b', firstName: 'AB', lastName: 'CD'}, (err, user) => {
+	User.create({_id: '1', email: 'a@a.com', password: 'a', first_name: 'AB', last_name: 'CD'}, (err, user) => {
 		if(err) {
 			console.log(err);
 		}
 
 		console.log("Successfully created User.")
 		console.log(user);
-	})
+	});
 
 }
 

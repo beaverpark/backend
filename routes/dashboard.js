@@ -7,5 +7,6 @@ router.get('/my-page', userController.getUser);
 
 router.post('/signup', userController.createUser);
 
+userController.createUser();
 
 module.exports = router;
