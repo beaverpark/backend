@@ -2,6 +2,7 @@
 const mongoose = require('mongoose');
 
 const Goal = require('../models/Goal');
+const Step = require('../models/Step');
 
 // const goal = new Goal({
 // 	name: "Read more books",

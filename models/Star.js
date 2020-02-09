@@ -7,7 +7,7 @@ const schema = new Schema({
 	duration: String,
 	step_id: {
 		type: mongoose.Schema.Types.ObjectId,
-		ref: 'Step'		
+		ref: 'User.goals.steps'		
 	}
 });
 

@@ -15,7 +15,7 @@ exports.getUser = (req, res) => {
 
 exports.createUser = (req, res) => {
 	
-	User.create({email: 'b@b.com', password: 'b', first_name: 'David', last_name: 'Kim'}, (err, user) => {
+	User.create({email: 'a@a.com', password: 'A', first_name: 'Ryan', last_name: 'Park'}, (err, user) => {
 		if(err) {
 			console.log(err);
 		}

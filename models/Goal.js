@@ -9,11 +9,12 @@ const schema = new Schema({
 			name: String,
 			description: String
 		}
-	],
-	user_id: {
-		type: mongoose.Schema.Types.ObjectId,
-		ref: 'User'
-	}
+	]
+	// ,
+	// user_id: {
+	// 	type: mongoose.Schema.Types.ObjectId,
+	// 	ref: 'User'
+	// }
 });
 
 const Goal = mongoose.model('Goal', schema);

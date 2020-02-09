@@ -7,6 +7,7 @@ const User = require('./models/User');
 app.use(express.static(path.join(__dirname, 'public')));
 
 //TODO: make api.beaver.com/
+//TODO: make accounts.beaver.com/
 
 app.get('/api/test', (req, res) => {
 	console.log('/api/test called');
