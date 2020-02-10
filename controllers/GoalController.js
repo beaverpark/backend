@@ -1,72 +1,62 @@
-// TODO:temp import
 const mongoose = require('mongoose');
-
 const Goal = require('../models/Goal');
 const Step = require('../models/Step');
 
-// const goal = new Goal({
-// 	name: "Read more books",
-// 	description: "get more knowledge by finishing 1 book per month",
-// 	steps: [
-// 		{
-// 			name: "test1",
-// 			description: "test2"
-// 		},
-// 		{
-// 			name: "test3",
-// 			description: "test4"
-// 		}
-// 	],
-// 	user_id: mongoose.Types.ObjectId("5e3b8ed3c6590621c60b2bd1")
-// });
+// TODO: add logger
 
-// Goal.create(goal, (err, goal) => {
+// TODO: do this only for a user
+// Get all goals of a user
+exports.getGoals = (req, res) => {
 
-// 	if(err) {
-// 		console.log(err);
-// 	}
+	Goal.find()
+	.then(goals => {
 
-// 	console.log("Successfully created Goal.")
-// 	console.log(goal);
+		console.log(goals);
 
-// });
+		res.send(goals);
+	})
+	.catch(err => {
+		console.log(err);
+	});
+};
 
-
-
-
+// Create a goal for a user
 exports.createGoal = (req, res) => {
 
-	const goal = new Goal({
+	// TODO: sanitize req.body (use req.body.hasOwnProperty("steps"))
+
+	// TODO: temp
+	const userId = "5e3b8ec2c2918321af88b614";
+
+	console.log(req.body)
+
+	const newGoal = new Goal({
 		name: req.body.name,
 		description: req.body.description,
-		steps: [
-			{
-				name: "test1",
-				description: "test2"
-			},
-			{
-				name: "test3",
-				description: "test4"
-			}
-		],
-		user_id: ObjectId(req.user._id)
+		steps: req.body.steps,
+		user_id: mongoose.Types.ObjectId(userId)
 	});
 
-	Goal.create(goal, (err, goal) => {
-
-		if(err) {
-			console.log(err);
-		}
-
-		console.log("Successfully created Goal.")
+	Goal.create(newGoal)
+	.then((goal) => {
 		console.log(goal);
+	})
+	.catch((err) => {
+		console.log(err);
+	}) 
 
-	});
+};
 
-}
-
+// Update a goal by its goal id
 exports.updateGoal = (req, res) => {
 
+	const goalId = req.params.id;
+
+	console.log(goalId)
+
+	//update
+
+	res.send(goalId);
 }
 
 exports.deleteGoal = (req, res) => {

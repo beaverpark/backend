@@ -1,20 +1,19 @@
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
+// Step model
+const Step = require('./Step');
+
 const schema = new Schema({
 	name: String,
 	description: String,
 	steps: [
-		{
-			name: String,
-			description: String
-		}
-	]
-	// ,
-	// user_id: {
-	// 	type: mongoose.Schema.Types.ObjectId,
-	// 	ref: 'User'
-	// }
+		Step.schema
+	],
+	user_id: {
+		type: mongoose.Schema.Types.ObjectId,
+		ref: 'User'
+	}
 });
 
 const Goal = mongoose.model('Goal', schema);
