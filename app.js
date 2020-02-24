@@ -20,12 +20,35 @@ app.use('/temp', require('./routes/temp'));
 
 const port = process.env.port || 3000;
 
-app.listen(port, (error) => {
+app.listen(port, (err) => {
 
-	if(error) {
-	  logger.error(error);
+	if(err) {
+	  logger.error(err);
 	  process.exit(1);
 	}
 
 	console.log(`server listening on port ${port}`)
+});
+
+// console.log(app.locals)
+
+
+// catch any unsupported route for displaying 404
+app.use((req, res, next) => {
+	res.status(404).end('Not Found');
+});
+
+// custom error handler
+app.use((err, req, res, next) => {
+	// in dev, just use the default error handler
+	if(req.app.get('env') === 'development') {
+		next(err);
+	} else {
+		// in production, log the actual error and show 500 Internal Server Error
+		// TODO: log the error somewhere
+		console.log(err);
+
+	  res.status(err.status || 500);
+	  res.send('Internal Server Error');
+	}
 });
