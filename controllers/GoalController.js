@@ -4,11 +4,11 @@ const Goal = require('../models/Goal');
 const Step = require('../models/Step');
 
 // TODO: add logger
+// TODO: do these only for a single user
 
-// TODO: do this only for a user
 // [GET] Get all goals
-// success: 200
-// server error: 500
+// 200 (success)
+// TODO: pagination if list is too long
 exports.getGoals = (req, res, next) => {
 
 	Goal.find()
@@ -23,11 +23,8 @@ exports.getGoals = (req, res, next) => {
 	});
 };
 
-
 // [GET] Get a goal by its id
-// success: 200
-// no goal found: 404
-// server error: 500
+// 200 (success), 422 (invalid id), 404 (goal not found)
 exports.getGoal = (req, res, next) => {
 
 	const goalId = req.params.id;
@@ -37,7 +34,7 @@ exports.getGoal = (req, res, next) => {
 		console.log(goal)
 
 		if(goal == null) {
-			res.status(404).send('Goal not found');
+			res.status(404).end('Not Found');
 		} else {
 			res.send(goal);
 		}
@@ -47,21 +44,8 @@ exports.getGoal = (req, res, next) => {
 	});
 };
 
-
-// If a new resource is created, the origin server MUST inform the user agent 
-// via the 201 (Created) response. If an existing resource is modified, either 
-// the 200 (OK) or 204 (No Content) response codes SHOULD be sent to indicate 
-// successful completion of the request.
-
-// 204 No Content is however, very useful for ajax web services which may want 
-// to indicate success without having to return something. (Especially in cases 
-// like DELETE or POSTs that don't require feedback). If the resource is 
-// successfully deleted
-
-
 // [POST] Create a goal for a user
-// success: 201 (created)
-// server error: 500 
+// 201 (success) with header 'Location' 
 exports.createGoal = (req, res) => {
 
 	// TODO: sanitize req.body (use req.body.hasOwnProperty("steps"))
@@ -81,26 +65,49 @@ exports.createGoal = (req, res) => {
 	Goal.create(newGoal)
 	.then((goal) => {
 		console.log(goal);
+
+		// TODO: prod url support
+		res.setHeader('Location', `http://localhost:3000/goal-management/goals/${goal._id}`);
 		res.status(201).send(goal);
 	})
 	.catch((err) => {
-		console.log(err);
-		res.sendStatus(500);
+		next(err);
 	}) 
 };
 
-
-// Update a goal by its goal id
+// [PUT] update a specified goal
+// 200 (success), 422 (invalid id), 404 (goal not found)
 exports.updateGoal = (req, res) => {
 
-	console.log(req.params);
+	console.log(req.params)
+	console.log(req.body)
 
 	const goalId = req.params.id;
 
-	//update
+	//TODO: this works, but it actually updates the id of the Steps
+	// need to figure out how not to
 
-	res.send(goalId);
-}
+	const updatedGoal = {
+		name: req.body.name,
+		description: req.body.description,
+		steps: req.body.steps,
+		user_id: ObjectId(req.body.user_id)
+	};
+
+	Goal.findByIdAndUpdate(goalId, updatedGoal, {new: true})
+	.then((goal, a) => {
+		console.log(goal);
+
+		if(goal == null) {
+			res.status(404).end('Not Found');
+		} else {
+			res.send(goal);
+		}
+	})
+	.catch((err) => {
+		next(err);
+	})
+};
 
 exports.deleteGoal = (req, res) => {
 
