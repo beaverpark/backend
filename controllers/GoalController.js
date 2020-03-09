@@ -75,17 +75,47 @@ exports.createGoal = (req, res) => {
 	}) 
 };
 
-// [PUT] update a specified goal
+// [PUT] replace entire document with specified one
+// Note: if '_id' of steps are missing, new objects are created with new '_id's
 // 200 (success), 422 (invalid id), 404 (goal not found)
-exports.updateGoal = (req, res) => {
+exports.replaceGoal = (req, res, next) => {
 
 	console.log(req.params)
 	console.log(req.body)
 
 	const goalId = req.params.id;
 
-	//TODO: this works, but it actually updates the id of the Steps
-	// need to figure out how not to
+	const replacedGoal = {
+		name: req.body.name,
+		description: req.body.description,
+		steps: req.body.steps,
+		user_id: ObjectId(req.body.user_id)
+	};
+
+	Goal.findOneAndReplace({'_id': goalId}, replacedGoal, {new: true})
+	.then((goal) => {
+
+		if(goal == null) {
+			res.status(404).end('Not Found');
+		} else {
+			console.log(goal);
+
+			res.send(goal);
+		}
+	})
+	.catch((err) => {
+		next(err);
+	})
+};
+
+// [PATCH] update a specified goal
+// 200 (success), 422 (invalid id), 404 (goal not found)
+exports.updateGoal = (req, res, next) => {
+
+	console.log(req.params)
+	console.log(req.body)
+
+	const goalId = req.params.id;
 
 	const updatedGoal = {
 		name: req.body.name,
@@ -94,13 +124,17 @@ exports.updateGoal = (req, res) => {
 		user_id: ObjectId(req.body.user_id)
 	};
 
-	Goal.findByIdAndUpdate(goalId, updatedGoal, {new: true})
-	.then((goal, a) => {
-		console.log(goal);
+	Goal.findOne({'_id': goalId})
+	.then((goal) => {
 
 		if(goal == null) {
 			res.status(404).end('Not Found');
 		} else {
+			console.log(goal);
+
+			//TODO: only update fields that are specified			
+
+
 			res.send(goal);
 		}
 	})
@@ -108,6 +142,9 @@ exports.updateGoal = (req, res) => {
 		next(err);
 	})
 };
+
+
+// NOTE: findOneAndReplace() matches with PUT while findOneAndUpdate() matches with PATCH
 
 exports.deleteGoal = (req, res) => {
 
