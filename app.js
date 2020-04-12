@@ -48,7 +48,6 @@ app.use((err, req, res, next) => {
 		// TODO: log the error somewhere
 		console.log(err);
 
-	  res.status(err.status || 500);
-	  res.send('Internal Server Error');
+	  res.status(500).send('Internal Server Error');
 	}
 });
